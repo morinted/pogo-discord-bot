@@ -1,0 +1,33 @@
+{
+  "name": "pogo-discord-bot",
+  "version": "0.0.1",
+  "description": "Pokemon GO Ottawa Discord bot",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "discord.js": "^11.1.0",
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "start:watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/morinted/pogo-discord-bot.git"
+  },
+  "keywords": [
+    "pokemon",
+    "go",
+    "discord",
+    "bot",
+    "ottawa"
+  ],
+  "author": "Ted Morin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/morinted/pogo-discord-bot/issues"
+  },
+  "homepage": "https://github.com/morinted/pogo-discord-bot#readme"
+}
