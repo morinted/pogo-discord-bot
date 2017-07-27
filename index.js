@@ -11,6 +11,21 @@ const MYSTIC = 'teammystic'
 const MODERATOR = 'mods'
 const RAID_CHANNEL_PREFIX = 'raids-'
 
+const WATCHABLES =
+  [ 'ttar'
+  , 'Lugia'
+  , 'Articuno'
+  , 'Zapdos'
+  , 'Moltres'
+  , 'unown'
+  , 'Snorlax'
+  , 'Lapras'
+  ]
+const ALIASES =
+  { ttar: ['Tyranitar']
+  , unown: ['unknown']
+  }
+
 // Ideas:
 // - Add gym search
 
@@ -24,10 +39,17 @@ bot.on('message', message => {
     const content = message.content
     const channel = message.channel.name
     if (content.indexOf(`${PREFIX}help`) === 0) {
-      message.channel.send(
-        `${message.member.toString()}, I am PMing you my commands.`
-      )
-      message.member.send(
+      console.log(message.channel.type)
+      if (message.channel.type !== 'dm') {
+        message.channel.send(
+          `${message.member.toString()}, I am PMing you my commands.`
+        )
+      }
+      const dmUser =
+        message.channel.type === 'dm'
+          ? message.channel
+          : message.member
+      dmUser.send(
         `I'm the PokéBot. I'm helping manage the server.
 
 - \`.leave\`   -   leave the raid channel you are in
@@ -36,7 +58,7 @@ bot.on('message', message => {
 - \`.help\`   -   get this message sent to you
 `)
     } else if (content.indexOf(`${PREFIX}no-team`) === 0) {
-      if (message.channel.name !== 'help') return
+      if (!['help', 'join-team'].includes(message.channel.name)) return
       message.channel.send(
         `${message.guild.roles.find('name', DEFAULT_ROLE)}: please post a screenshot of your profile here to get a team assigned which will get you access to team-specific channels and help with coordinating raids. Thanks!`
       )
@@ -50,7 +72,6 @@ bot.on('message', message => {
       }
       const noRaidName = `not-${channel.slice(RAID_CHANNEL_PREFIX.length)}`
       const noRaidRole = guild.roles.find('name', noRaidName)
-      console.log('noRaidRole', noRaidRole)
       if (!noRaidRole) {
         guild.createRole(
           { name: noRaidName
@@ -91,7 +112,6 @@ ${optedOut
 }
 
 Just say: \`.join channel-name-here\``
-        console.log(reply)
         message.channel.send(reply)
         return
       }
@@ -116,6 +136,17 @@ Just say: \`.join channel-name-here\``
           )
         })
       }
+    } else if (content.indexOf('.watch') === 0) {
+      if (content.split(' ').length < 2) {
+        message.channel.send(
+          `${message.member.toString()}, you can watch for these Pokémon:
+
+${ WATCHABLES.join(', ') }`
+        )
+        return
+      }
+      const targetPokemon = content.split(' ')[1]
+
     }
   } catch (e) {
     console.log('Something went wrong while handling a message.')
@@ -139,7 +170,7 @@ bot.on('messageReactionAdd', (reaction, user) => {
     const isModerator = reacter.roles.has(moderatorRole.id)
     const channel = reaction.message.channel.name
     const sender = reaction.message.member
-    if (channel !== 'help' ||
+    if (!['help', 'join-team'].includes(channel) ||
         ['instinct', 'mystic', 'valor'].every(teamReaction => teamReaction !== reactedWith)
       ) {
       return
