@@ -136,6 +136,29 @@ Just say: \`.join channel-name-here\``
           )
         })
       }
+    } else if (content.indexOf('.assign-no-team') === 0) {
+      const teamRoles = [INSTINCT, VALOR, MYSTIC, DEFAULT_ROLE]
+      const noTeamRole = message.guild.roles.find('name', DEFAULT_ROLE)
+      let added = 0
+      const members = message.guild.members.array()
+      const addMembers = remainingMembers => {
+        if (!remainingMembers.length) {
+          message.channel.send(`Added ${added} users to the "no-team" role.`)
+          return
+        }
+        const member = remainingMembers.pop()
+        const roles = member.roles.array()
+        if (!roles.some(role => teamRoles.includes(role.name))) {
+          return member.addRole(noTeamRole).then(() => {
+            added += 1
+            return addMembers(remainingMembers)
+          })
+        } else {
+          return addMembers(remainingMembers)
+        }
+      }
+      addMembers(members)
+      
     } else if (content.indexOf('.watch') === 0) {
       if (content.split(' ').length < 2) {
         message.channel.send(
