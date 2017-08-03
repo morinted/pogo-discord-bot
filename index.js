@@ -25,6 +25,7 @@ const ALIASES =
   { ttar: ['Tyranitar']
   , unown: ['unknown']
   }
+const spottingTimeout = {}
 
 // Ideas:
 // - Add gym search
@@ -42,9 +43,17 @@ const pokeSpottingFilter = message => {
     const hasLink =
       message.content.includes('http') || message.content.includes('www.')
     if (!hasLink && !isModerator && !hasAttachments && !hasEmbeds) {
+      if (spottingTimeout[message.member.id]) {
+        // User posted a sighting
+        const timeSince = Date.now() - spottingTimeout[message.member.id]
+        if (timeSince < 120 * 1000) {
+          return // Allow message if it's been two minutes since their last sighting.
+        }
+      }
       const general = message.guild.channels.find('name', 'general')
+      const help = message.guild.channels.find('name', 'help')
       const nestDiscussion = message.guild.channels.find('name', 'nest-discussion')
-      general.send(
+      help.send(
         `
 ${message.member.toString()}: your recent message, \`${message.content}\`, was deleted. ${message.channel.toString()} is for sightings only.
 
@@ -55,6 +64,9 @@ We do this so that users can have push notifications on for ${message.channel.to
       ).then(() =>
         message.delete()
       )
+    } else {
+      // Legit message, give the user a timeout.
+      spottingTimeout[message.member.id] = Date.now()
     }
     return true
   } else {
