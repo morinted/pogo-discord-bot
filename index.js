@@ -33,6 +33,35 @@ bot.on('ready', () => {
   console.log('PoGO Bot: Ready!')
 })
 
+const pokeSpottingFilter = message => {
+  if (message.channel.name === 'poke-spotting' || message.channel.name === 'echo-manager') {
+    const hasAttachments = !!message.attachments.array().length
+    const hasEmbeds = !!message.embeds.length
+    const moderatorRole = message.guild.roles.find('name', MODERATOR)
+    const isModerator = message.member.roles.has(moderatorRole.id)
+    const hasLink =
+      message.content.includes('http') || message.content.includes('www.')
+    if (!hasLink && !isModerator && !hasAttachments && !hasEmbeds) {
+      const general = message.guild.channels.find('name', 'general')
+      const nestDiscussion = message.guild.channels.find('name', 'nest-discussion')
+      general.send(
+        `
+${message.member.toString()}: your recent message, \`${message.content}\`, was deleted. ${message.channel.toString()} is for sightings only.
+
+Chat in ${general.toString()} or ${nestDiscussion.toString()}. If you have a sighting, include a Google Maps link or a screenshot so that it doesn't get deleted.
+
+We do this so that users can have push notifications on for ${message.channel.toString()} without getting spammed with conversation.
+`
+      ).then(() =>
+        message.delete()
+      )
+    }
+    return true
+  } else {
+    return false
+  }
+}
+
 bot.on('message', message => {
   try {
     const guild = message.guild
@@ -57,6 +86,8 @@ bot.on('message', message => {
 - \`.join channel-name-here\`   -   enable the raid channel you previously left
 - \`.help\`   -   get this message sent to you
 `)
+    } else if (pokeSpottingFilter(message)) {
+      // Do nothing
     } else if (content.indexOf(`${PREFIX}no-team`) === 0) {
       if (!['help', 'join-team'].includes(message.channel.name)) return
       message.channel.send(
@@ -158,7 +189,7 @@ Just say: \`.join channel-name-here\``
         }
       }
       addMembers(members)
-      
+
     } else if (content.indexOf('.watch') === 0) {
       if (content.split(' ').length < 2) {
         message.channel.send(
@@ -193,7 +224,8 @@ bot.on('messageReactionAdd', (reaction, user) => {
     const isModerator = reacter.roles.has(moderatorRole.id)
     const channel = reaction.message.channel.name
     const sender = reaction.message.member
-    if (!['help', 'join-team'].includes(channel) ||
+    if (!isModerator ||
+        !['help', 'join-team'].includes(channel) ||
         ['instinct', 'mystic', 'valor'].every(teamReaction => teamReaction !== reactedWith)
       ) {
       return
