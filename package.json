@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "Pokemon GO Ottawa Discord bot",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "eslint": "^4.5.0",
+    "string-similarity": "^1.2.0"
+  },
   "devDependencies": {
     "discord.js": "^11.1.0",
     "nodemon": "^1.11.0"
