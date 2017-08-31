@@ -45,7 +45,6 @@ const RAID_CHANNEL_PREFIX = 'raids-'
 
 // Ideas:
 // - Add gym search
-// - Handle typos for groups
 // - Watch/ignore all
 
 bot.on('ready', () => console.log('PoGO Bot: Ready!'))
@@ -218,11 +217,39 @@ const getPokemonRole = (ctx, targetPokemon) => {
 
 const matchPokemon = (userPokemon, raidOnly = false) => {
   const pool = raidOnly ? raidPokemon : pokemon.pokemon
-  const pokeMatch = stringSimilarity.findBestMatch(userPokemon, pool).bestMatch
+  // Allow mapping of TTar -> Tyranitar
+  const poolWithAliases =
+    [...pool, ...Object.keys(pokemon.aliases.pokemon)]
+  const pokeMatch = stringSimilarity.findBestMatch(userPokemon, poolWithAliases).bestMatch
   if (pokeMatch.rating < 0.6) {
     return false
   }
-  return pokeMatch.target
+  const resultingPokemon =
+    pokemon.aliases.pokemon[pokeMatch.target] || pokeMatch.target
+  return resultingPokemon
+}
+
+const matchGroup = userInput => {
+  const groupsWithAliases =
+    [...pokeGroups.map(group => group.code), ...Object.keys(pokemon.aliases.groups)]
+  const groupMatch = stringSimilarity.findBestMatch(userInput, groupsWithAliases).bestMatch
+  if (groupMatch.rating < 0.6) {
+    return false
+  }
+
+  const resultingGroup =
+    pokemon.aliases.groups[groupMatch.target] || groupMatch.target
+  return pokeGroups.find(group => group.code === resultingGroup)
+}
+
+const stop = ctx => {
+  ctx.channel.send(
+    `I'm sorry ${ctx.message.member.toString()}, I'm afraid I can't do that.`
+  )
+}
+
+const hi = ctx => {
+  ctx.channel.send('...yo')
 }
 
 const watch = ctx => {
@@ -244,8 +271,8 @@ const watch = ctx => {
     return ctx.channel.send(watchMessage)
   }
   const rolesToAdd = []
-  ctx.params.split(' ').forEach(watchable => {
-    const group = pokeGroups.find(group => group.code === watchable.toLowerCase())
+  ctx.params.split(' ').filter(x => x).forEach(watchable => {
+    const group = matchGroup(watchable)
     if (group) {
       group.pokemon.map(poke =>
         rolesToAdd.push(getPokemonRole(ctx, poke))
@@ -267,7 +294,10 @@ const watch = ctx => {
   const userRoles = ctx.message.member.roles
   if (rolesToAdd.length) {
     Promise.all(rolesToAdd).then(roles => {
-      const newRoles = roles.filter(role => !userRoles.has(role.id))
+      const newRoles =
+        // Remove duplicates, then filter out already assigned ones.
+        [...new Set(roles)].filter(role => !userRoles.has(role.id))
+
       ctx.message.member.addRoles(newRoles).then(() => {
         ctx.channel.send(`${ctx.message.member.toString()
         }: you are now watching for ${roles.map(role => role.name).join(', ')}.`)
@@ -292,8 +322,8 @@ Right now you are watching ${
     .join(', ')}`)
   }
   const rolesToRemove = []
-  ctx.params.split(' ').forEach(watchable => {
-    const group = pokeGroups.find(group => group.code === watchable.toLowerCase())
+  ctx.params.split(' ').filter(x => x).forEach(watchable => {
+    const group = matchGroup(watchable)
     if (group) {
       group.pokemon.map(poke =>
         rolesToRemove.push(getPokemonRole(ctx, poke))
@@ -443,6 +473,15 @@ bot.on('message', message => {
         break
       case 'wild':
         wild(ctx)
+        break
+      case 'migrate':
+        migrate(ctx)
+        break
+      case 'stop':
+        stop(ctx)
+        break
+      case 'hi':
+        hi(ctx)
         break
     }
   } catch (e) {

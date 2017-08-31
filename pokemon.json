@@ -1,6 +1,12 @@
 { "aliases":
-  { "ttar": "Tyranitar"
-  , "battletoys": "Blastoise"
+  { "pokemon":
+    { "ttar": "Tyranitar"
+    , "battletoys": "Blastoise"
+    }
+  , "groups":
+    { "level5": "legends"
+    , "legendaries": "legends"
+    }
   }
 , "rares":
   [ "Lapras"
