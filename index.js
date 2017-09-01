@@ -6,6 +6,9 @@ const pokemonExists = pokemon.pokemon.reduce((res, pokeName) => {
   res[pokeName] = true
   return res
 }, {})
+
+const raidAnnounceCooldown = {}
+
 const pokeGroups =
   [ { name: 'Rares'
     , pokemon: pokemon.rares
@@ -30,6 +33,14 @@ const pokeGroups =
   , { name: 'Legendaries'
     , pokemon: pokemon.legends
     , code: 'legends'
+    }
+  , { name: 'Dogs'
+    , pokemon: [ 'Raikou', 'Suicune', 'Entei' ]
+    , code: 'dogs'
+    }
+  , { name: 'Birds'
+    , pokemon: [ 'Articuno', 'Zapdos', 'Moltres' ]
+    , code: 'birds'
     }
   ]
 var stringSimilarity = require('string-similarity')
@@ -369,6 +380,21 @@ const raid = ctx => {
       `${ctx.message.member.toString()}: I don't think that's a raid Pokemon? :thinking:`
     )
   } else {
+    const lastRaidPinged = Date.now() - (raidAnnounceCooldown[ctx.message.member.toString()] || 0)
+    const timeLimit = 1000 * 60 * 5
+    if (lastRaidPinged < timeLimit) {
+      ctx.channel.send(
+        `Sorry ${
+          ctx.message.member.toString()
+        }, you can only announce one raid every 5 minutes. Try again in ${
+          Math.floor((timeLimit - lastRaidPinged) / 1000)
+        } seconds.
+
+Please only ping a raid once. If you are actually trying to plan a different raid from your last, you'll need someone else to notify. Thanks for your understanding.`
+      )
+    } else {
+      raidAnnounceCooldown[ctx.message.member.toString()] = Date.now()
+    }
     // Get the Pokemon's role
     getPokemonRole(ctx, targetPokemon).then(role =>
       // Make it mentionable
@@ -446,7 +472,7 @@ bot.on('message', message => {
       , params: message.content.split(' ').slice(1).join(' ')
       }
     if (!ctx.isCommand) return
-    switch (ctx.command) {
+    switch ((ctx.command || '').toLowerCase()) {
       case 'help':
         sendHelp(ctx)
         break
@@ -473,9 +499,6 @@ bot.on('message', message => {
         break
       case 'wild':
         wild(ctx)
-        break
-      case 'migrate':
-        migrate(ctx)
         break
       case 'stop':
         stop(ctx)
