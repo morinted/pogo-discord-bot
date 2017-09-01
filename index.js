@@ -390,7 +390,7 @@ const raid = ctx => {
     const lastRaidPinged = Date.now() - (raidAnnounceCooldown[ctx.message.member.toString()] || 0)
     const timeLimit = 1000 * 60 * 5
     if (lastRaidPinged < timeLimit) {
-      ctx.channel.send(
+      return ctx.channel.send(
         `Sorry ${
           ctx.message.member.toString()
         }, you can only announce one raid every 5 minutes. Try again in ${
