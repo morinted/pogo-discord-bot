@@ -278,7 +278,7 @@ const watch = ctx => {
       watchMessage += `**${group.name}** - \`.watch ${group.code}\`\n`
       watchMessage += group.pokemon.join(', ') + '\n\n'
     })
-    watchMessage += 'Or `.watch Pokemon` to watch a individual Pokemon, e.g. `.watch Mareep Flaffy Ampharos`'
+    watchMessage += 'Or `.watch Pokemon` to watch a individual Pokemon, e.g. `.watch Mareep Flaffy Ampharos`\n\n'
     watchMessage +=
       `Right now ${ctx.message.member.toString()} is watching ${
         ctx.message.member.roles.array()
