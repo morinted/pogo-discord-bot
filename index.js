@@ -279,6 +279,13 @@ const watch = ctx => {
       watchMessage += group.pokemon.join(', ') + '\n\n'
     })
     watchMessage += 'Or `.watch Pokemon` to watch a individual Pokemon, e.g. `.watch Mareep Flaffy Ampharos`'
+    watchMessage +=
+      `Right now ${ctx.message.member.toString()} is watching ${
+        ctx.message.member.roles.array()
+          .map(role => role.name)
+          .filter(role => pokemonExists[role])
+          .join(', ')
+      }`
     return ctx.channel.send(watchMessage)
   }
   const rolesToAdd = []
