@@ -19,6 +19,13 @@
   , "Chansey"
   , "Blissey"
   , "Unown"
+  , "Salamence"
+  , "Metagross"
+  , "Slaking"
+  , "Aggron"
+  , "Gardevoir"
+  , "Flygon"
+  , "Milotic"
   ]
 , "legends":
   [ "Zapdos"
@@ -32,6 +39,16 @@
   , "Lugia"
   , "Ho-Oh"
   , "Celebi"
+  , "Regirock"
+  , "Regice"
+  , "Registeel"
+  , "Latias"
+  , "Latios"
+  , "Kyogre"
+  , "Groudon"
+  , "Rayquaza"
+  , "Jirachi"
+  , "Deoxys"
   ]
 , "level1":
   [ "Magikarp"

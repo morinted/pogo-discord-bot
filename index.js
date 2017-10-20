@@ -464,6 +464,10 @@ bot.on('message', message => {
   try {
     // No DM support!
     if (message.channel.type === 'dm') {
+      // Prevent loop
+      if (message.content.indexOf('I only work') !== -1) {
+        return
+      }
       message.channel.send('I only work on the #bot channel, not through DMs.')
       return
     }
