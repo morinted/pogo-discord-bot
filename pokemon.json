@@ -52,30 +52,31 @@
   ]
 , "level1":
   [ "Magikarp"
-  , "Bayleef"
-  , "Quilava"
-  , "Croconaw"
+  , "Ivysaur"
+  , "Charmeleon"
+  , "Wartortle"
   ]
 , "level2":
-  [ "Muk"
-  , "Exeggutor"
-  , "Weezing"
-  , "Electabuzz"
-  , "Magmar"
+  [ "Sandslash"
+  , "Tentacruel"
+  , "Magneton"
+  , "Cloyster"
+  , "Marowak"
+  , "Sableye"
   ]
 , "level3":
-  [ "Arcanine"
+  [ "Ninetales"
   , "Alakazam"
   , "Machamp"
   , "Gengar"
-  , "Vaporeon"
-  , "Jolteon"
-  , "Flareon"
+  , "Scyther"
+  , "Porygon"
+  , "Omastar"
   ]
 , "level4":
-  [ "Venusaur"
-  , "Charizard"
-  , "Blastoise"
+  [ "Nidoking"
+  , "Victreebel"
+  , "Golem"
   , "Rhydon"
   , "Lapras"
   , "Snorlax"
