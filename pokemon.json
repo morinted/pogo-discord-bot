@@ -2,33 +2,26 @@
   { "pokemon":
     { "ttar": "Tyranitar"
     , "battletoys": "Blastoise"
+    , "ray": "Rayquaza"
+    , "legendary": "LegendaryEgg"
+    , "legend": "LegendaryEgg"
     }
   , "groups":
     { "level5": "legends"
     , "legendaries": "legends"
     }
   }
-, "rares":
-  [ "Lapras"
-  , "Snorlax"
-  , "Dragonite"
-  , "Machamp"
-  , "Golem"
-  , "Gyarados"
-  , "Tyranitar"
-  , "Chansey"
-  , "Blissey"
-  , "Unown"
-  , "Salamence"
-  , "Metagross"
-  , "Slaking"
-  , "Aggron"
-  , "Gardevoir"
-  , "Flygon"
-  , "Milotic"
+, "special":
+  [ "Perfect"
+  , "Egg1"
+  , "Egg2"
+  , "Egg3"
+  , "Egg4"
+  , "LegendaryEgg"
   ]
 , "legends":
-  [ "Zapdos"
+  [ "LegendaryEgg"
+  , "Zapdos"
   , "Moltres"
   , "Articuno"
   , "Mew"
@@ -52,38 +45,42 @@
   ]
 , "level1":
   [ "Magikarp"
-  , "Ivysaur"
-  , "Charmeleon"
-  , "Wartortle"
+  , "Wailmer"
+  , "Swablu"
+  , "Snorunt"
+  , "Egg1"
   ]
 , "level2":
-  [ "Sandslash"
-  , "Tentacruel"
-  , "Magneton"
-  , "Cloyster"
+  [ "Cloyster"
   , "Marowak"
-  , "Sableye"
+  , "Dewgong"
+  , "Mawile"
+  , "Egg2"
   ]
 , "level3":
-  [ "Ninetales"
-  , "Alakazam"
+  [ "Jynx"
+  , "Azumarill"
   , "Machamp"
-  , "Gengar"
-  , "Scyther"
-  , "Porygon"
-  , "Omastar"
+  , "Piloswine"
+  , "Egg3"
   ]
 , "level4":
-  [ "Nidoking"
-  , "Victreebel"
-  , "Golem"
-  , "Rhydon"
+  [ "Feraligatr"
+  , "Aggron"
+  , "Absol"
   , "Lapras"
   , "Snorlax"
   , "Tyranitar"
+  , "Egg4"
   ]
 , "pokemon":
-  [ "Bulbasaur"
+  [ "Perfect"
+  , "Egg1"
+  , "Egg2"
+  , "Egg3"
+  , "Egg4"
+  , "LegendaryEgg"
+  , "Bulbasaur"
   , "Ivysaur"
   , "Venusaur"
   , "Charmander"

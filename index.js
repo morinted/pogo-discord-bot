@@ -10,9 +10,9 @@ const pokemonExists = pokemon.pokemon.reduce((res, pokeName) => {
 const raidAnnounceCooldown = {}
 
 const pokeGroups =
-  [ { name: 'Rares'
-    , pokemon: pokemon.rares
-    , code: 'rares'
+  [ { name: 'Utility Tags'
+    , pokemon: pokemon.special
+    , code: 'special'
     }
   , { name: 'Level 1 Raids'
     , pokemon: pokemon.level1
@@ -33,14 +33,6 @@ const pokeGroups =
   , { name: 'Legendaries'
     , pokemon: pokemon.legends
     , code: 'legends'
-    }
-  , { name: 'Dogs'
-    , pokemon: [ 'Raikou', 'Suicune', 'Entei' ]
-    , code: 'dogs'
-    }
-  , { name: 'Birds'
-    , pokemon: [ 'Articuno', 'Zapdos', 'Moltres' ]
-    , code: 'birds'
     }
   ]
 var stringSimilarity = require('string-similarity')
